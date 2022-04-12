@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+    tags: ['v*']
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@main
+    - name: docker login
+      env: 
+        AUTH: ${{ secrets.DOCKER_HUB_TOKEN }}
+      run: docker login -u jeyrce -p "$AUTH"
+    - name: Build the Docker image
+      env:
+        VERSION: ${{ github.ref }}
+      run: docker build . --file Dockerfile --tag jeyrce/image-build-test:"$VERSION"
+    - name: Image push
+      run: docker push jeyrce/image-build-test:"$VERSION"
