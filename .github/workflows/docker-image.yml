@@ -17,6 +17,6 @@ jobs:
     - name: docker login
       env: 
         AUTH: ${{ secrets.DOCKER_HUB_TOKEN }}
-      run: docker login -u jeyrce -p $AUTH
+      run: docker login -u jeyrce -p "$AUTH"
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag image-build-test:$(date +%s)
